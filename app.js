@@ -1,13 +1,15 @@
 require('colors')
-
 const inquirer = require('inquirer');
+
 const { 
     inquirerMenu, 
     pausa, 
     leerInput, 
     listadoTareasBorrar,
     confirmar,
-    tareasCheckList
+    tareasCheckList,
+    editarMenu,
+    listadoTareasModificar
 } = require('./helpers/inquirer.js');
 const Tareas = require('./models/tareas')
 const { guardarDB, leerDB } = require('./db/database')
@@ -31,8 +33,15 @@ const main = async () => {
 
         switch( opt ){
             case 1: 
+                // agregar una tarea
                 const desc = await leerInput('Descripción:');
-                tareas.crearTarea(desc);
+                const ok = await confirmar('¿Está seguro de crear la tarea?');
+                    if ( ok ){
+                        tareas.crearTarea(desc);
+                        console.log(`Tarea creada correctamente :D`.green) 
+                    } else {
+                        console.log(`>> No se creo la tarea`.red);
+                    }   
             break;
 
             case 2: 
@@ -52,25 +61,46 @@ const main = async () => {
             break;
 
             case 5:
-                // completado o pendiente checkboxes
-                const ids =  await tareasCheckList( tareas.listadoArr );
-                tareas.toggleCompletadas(ids)
-            break;
-            case 6: 
+                // Menu para editar las tareas
+                const opc = await editarMenu();
+                switch( opc ) {
+                    // salir
+                    case 0: ''
+                    break;
+                    // Completar tareas
+                    case 1: 
+                        const ids =  await tareasCheckList( tareas.listadoArr );
+                        tareas.toggleCompletadas(ids)
+                    break;
+                    // Borrar tarea
+                    case 2: 
+                        const idElim = await listadoTareasBorrar( tareas.listadoArr );
+                        if ( idElim !== 0 ){
+                            const ok = await confirmar('¿Está seguro?');
+                            if ( ok ){
+                                tareas.borrarTarea(idElim) 
+                                console.log(`Tarea borrada correctamente :D`.green) 
+                            } else {
+                                console.log(`>> No se borro la tarea`.red);
+                            } 
+                        } 
+                    break;
+                    // Modificar Tarea
+                    case 3: 
+                        const idMod = await listadoTareasModificar( tareas.listadoArr );
+                        if ( idMod !== 0 ){
+                            const newDesc = await leerInput('Nueva descripción:');
+                            const ok = await confirmar('¿Está seguro?');
+                            if ( ok ){
+                                tareas.modificarTarea(idMod, newDesc);
+                                console.log(`Tarea modificada correctamente :D`.green) 
+                            } else {
+                                console.log(`>> No se borro la tarea`.red);
+                            } 
+                        } 
+                    break;
+                }
                 
-                const id = await listadoTareasBorrar( tareas.listadoArr );
-                if ( id !== 0 ){
-                    const ok = await confirmar('¿Está seguro?');
-                    if ( ok ){
-                        tareas.borrarTarea(id) 
-                        console.log(`Tarea borrada correctamente :D`.green) 
-                    } else {
-                        console.log(`>> No se borro la tarea`.red);
-                    }   
-
-                } 
-
-
             break;
         }
         
@@ -83,8 +113,6 @@ const main = async () => {
 
 
 }
-
-
 
 main();
 

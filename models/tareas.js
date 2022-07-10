@@ -34,6 +34,12 @@ class Tareas {
         }
     }
 
+    modificarTarea( id,  desc ){
+        if ( this._listado[id] ){
+            this._listado[id].desc = desc;
+        }
+    }
+
     cargarTareasFromArray( tareas = []) {
         
         tareas.map( tarea => this._listado[tarea.id] = tarea );
