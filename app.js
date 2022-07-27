@@ -61,46 +61,21 @@ const main = async () => {
             break;
 
             case 5:
+
+
                 // Menu para editar las tareas
                 const opc = await editarMenu();
-                switch( opc ) {
-                    // salir
-                    case 0: ''
-                    break;
-                    // Completar tareas
-                    case 1: 
-                        const ids =  await tareasCheckList( tareas.listadoArr );
-                        tareas.toggleCompletadas(ids)
-                    break;
-                    // Borrar tarea
-                    case 2: 
-                        const idElim = await listadoTareasBorrar( tareas.listadoArr );
-                        if ( idElim !== 0 ){
-                            const ok = await confirmar('¿Está seguro?');
-                            if ( ok ){
-                                tareas.borrarTarea(idElim) 
-                                console.log(`Tarea borrada correctamente :D`.green) 
-                            } else {
-                                console.log(`>> No se borro la tarea`.red);
-                            } 
-                        } 
-                    break;
-                    // Modificar Tarea
-                    case 3: 
-                        const idMod = await listadoTareasModificar( tareas.listadoArr );
-                        if ( idMod !== 0 ){
-                            const newDesc = await leerInput('Nueva descripción:');
-                            const ok = await confirmar('¿Está seguro?');
-                            if ( ok ){
-                                tareas.modificarTarea(idMod, newDesc);
-                                console.log(`Tarea modificada correctamente :D`.green) 
-                            } else {
-                                console.log(`>> No se borro la tarea`.red);
-                            } 
-                        } 
-                    break;
+
+                const opciones = {
+                    1: completarTareas,
+                    2: borrarTarea,
+                    3: modificarTarea,
                 }
-                
+
+                opc === 0 
+                    ? '' // no hacemos nada
+                    : await opciones[ opc ]( tareas ) // esperamos a que se ejecute la funcion
+
             break;
         }
         
@@ -113,6 +88,45 @@ const main = async () => {
 
 
 }
+
+const completarTareas = async ( tareas ) => {
+    const ids = await tareasCheckList( tareas.listadoArr );
+    tareas.toggleCompletadas(ids)
+
+    return tareas;
+}
+
+const borrarTarea = async ( tareas ) => {
+    const idElim = await listadoTareasBorrar( tareas.listadoArr );
+    if ( idElim !== 0 ){
+        const ok = await confirmar('¿Está seguro?');
+        if ( ok ){
+            tareas.borrarTarea(idElim) 
+            console.log(`Tarea borrada correctamente :D`.green) 
+        } else {
+            console.log(`>> No se borro la tarea`.red);
+        } 
+    } 
+
+    return tareas;
+} 
+
+const modificarTarea = async ( tareas ) => {
+    const idMod = await listadoTareasModificar( tareas.listadoArr );
+    if ( idMod !== 0 ){
+        const newDesc = await leerInput('Nueva descripción:');
+        const ok = await confirmar('¿Está seguro?');
+        if ( ok ){
+            tareas.modificarTarea(idMod, newDesc);
+            console.log(`Tarea modificada correctamente :D`.green) 
+        } else {
+            console.log(`>> No se borro la tarea`.red);
+        } 
+    } 
+
+    return tareas;
+}
+
 
 main();
 
