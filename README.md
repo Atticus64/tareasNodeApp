@@ -2,7 +2,9 @@
 
 ## Preview
 
-<img alt="previewMenu" src="./assets/previewListTareas.png">
+<img alt="gifPreview" width="70%" src="https://i.postimg.cc/QM7NzXgg/render1662610430401.gif">
+
+<img alt="previewMenu" width="70%" src="./assets/previewListTareas.png">
 
 ## Setup 
 
