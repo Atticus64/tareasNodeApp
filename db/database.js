@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs'
 
 const archivo = './db/data.json';
 
@@ -20,7 +20,7 @@ const leerDB = () => {
 }
 
 
-module.exports = {
+export {
     guardarDB,
     leerDB
 }

@@ -1,4 +1,4 @@
-const { v4: uuidv4 } = require('uuid')
+import { v4 as uuidv4} from 'uuid'
 
 
 class Tarea {
@@ -25,4 +25,6 @@ class Tarea {
 
 
 
-module.exports = Tarea;
+export {
+    Tarea
+}

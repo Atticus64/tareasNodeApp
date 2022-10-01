@@ -1,5 +1,5 @@
-const inquirer =  require('inquirer');
-require('colors')
+import inquirer from 'inquirer';
+import colors from 'colors'
 
 const preguntas = [
     {
@@ -227,7 +227,7 @@ const tareasCheckList = async ( tareas = [] ) => {
 
 
 
-module.exports = {
+export {
     inquirerMenu,
     pausa,
     leerInput,

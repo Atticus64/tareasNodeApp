@@ -1,7 +1,7 @@
-require('colors')
-const inquirer = require('inquirer');
+import colors from 'colors';
+import inquirer from 'inquirer';
 
-const { 
+import { 
     inquirerMenu, 
     pausa, 
     leerInput, 
@@ -10,9 +10,9 @@ const {
     tareasCheckList,
     editarMenu,
     listadoTareasModificar
-} = require('./helpers/inquirer.js');
-const Tareas = require('./models/tareas')
-const { guardarDB, leerDB } = require('./db/database')
+} from './helpers/inquirer.js';
+import {Tareas} from './models/tareas.js'
+import { guardarDB, leerDB } from './db/database.js';
 
 const main = async () => {
 
